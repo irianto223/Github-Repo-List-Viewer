@@ -21,9 +21,9 @@ export const requestOauthToken = (code) => {
       method: 'POST',
       url: `/login/oauth/access_token`,
       headers: {
-        // 'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': '*',
         'Accept': 'application/json',
-        'Content-Type': 'application/json'
+        // 'Content-Type': 'application/json'
       },
       params: {
         client_id: process.env.REACT_APP_GITHUB_CLIENT_ID,
