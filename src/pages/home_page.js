@@ -5,26 +5,43 @@ import { fetchReposByUsername } from '../services/API'
 
 export default (props) => {
   const [repos, reposSetter] = useState([])
+  const [username, usernameSetter] = useState('telkomdev')
 
   const getRepos = (username) => {
     fetchReposByUsername(username)
       .then((response) => {
-        console.log(response)
+        // console.log(response)
         if (response.status === 200) return reposSetter(response.data)
+        reposSetter([])
       })
       .catch((err) => {
         console.log('Error get repos --------------->')
-        console.log(err)
+        console.log(err.response)
+        try {
+          if (err.response.status === 404) return reposSetter([])
+        } catch (e) {
+          console.log(e)
+        }
       })
   }
 
   useEffect(() => {
-    getRepos('telkomdev')
+    getRepos(username)
   }, [])
 
   return (
     <Container>
-      <Input icon='search' placeholder='Username' />
+      <Input
+        action={{
+          color: 'teal',
+          icon: 'search',
+          onClick: () => getRepos(username)
+        }}
+        defaultValue='telkomdev'
+        placeholder={username}
+        onChange={(_, { value }) => usernameSetter(value)}
+      />
+
       <List divided relaxed>
         {repos.map((d) => (
           <List.Item key={d.id}>
