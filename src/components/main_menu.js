@@ -4,9 +4,10 @@ import { useHistory } from 'react-router-dom'
 
 export default (props) => {
   const history = useHistory()
-  const [activeItem, activeItemSetter] = useState('home')
-
   const token = localStorage.getItem('token')
+  
+  const [activeItem, activeItemSetter] = useState('home')
+  const [isAuthenticated, isAuthenticatedSetter] = useState(token != null)
 
   const handleClickMenu = (itemName, routeName) => {
     activeItemSetter(itemName)
@@ -38,7 +39,11 @@ export default (props) => {
     return (
       <Menu.Item
         name='logout'
-        onClick={(_) => null}
+        onClick={(_) => {
+          localStorage.removeItem('token')
+          isAuthenticatedSetter(false)
+          history.replace('/')
+        }}
       />
     )
   }

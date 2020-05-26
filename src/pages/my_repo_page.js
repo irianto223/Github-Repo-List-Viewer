@@ -15,11 +15,7 @@ export default (props) => {
       .catch((err) => {
         console.log('Error get repos --------------->')
         console.log(err.response)
-        try {
-          if (err.response.status === 404) return reposSetter([])
-        } catch (e) {
-          console.log(e)
-        }
+        reposSetter([])
       })
   }
 
