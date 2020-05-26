@@ -4,7 +4,7 @@ module.exports = function(app) {
   app.use(
     '/login/oauth/access_token',
     createProxyMiddleware({
-      target: 'https://github.com',
+      target: 'http://github.com',
       changeOrigin: true,
     })
   );
