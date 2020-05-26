@@ -6,9 +6,41 @@ export default (props) => {
   const history = useHistory()
   const [activeItem, activeItemSetter] = useState('home')
 
+  const token = localStorage.getItem('token')
+
   const handleClickMenu = (itemName, routeName) => {
     activeItemSetter(itemName)
     history.push(routeName)
+  }
+
+  const makePrivateMenuItem = () => {
+    return (
+      <div>
+        <Menu.Item
+          name='my repositories'
+          active={activeItem === 'my repositories'}
+          onClick={(e, { name }) => handleClickMenu(name, '/myrepo')}
+        />
+      </div>
+    )
+  }
+
+  const makeLoginButton = () => {
+    return (
+      <Menu.Item
+        name='login'
+        onClick={(_) => history.push('/auth')}
+      />
+    )
+  }
+
+  const makeLogoutButton = () => {
+    return (
+      <Menu.Item
+        name='logout'
+        onClick={(_) => null}
+      />
+    )
   }
 
   return (
@@ -18,16 +50,9 @@ export default (props) => {
         active={activeItem === 'home'}
         onClick={(e, { name }) => handleClickMenu(name, '/')}
       />
-      <Menu.Item
-        name='my repositories'
-        active={activeItem === 'my repositories'}
-        onClick={(e, { name }) => handleClickMenu(name, '/myrepo')}
-      />
+      {token ? makePrivateMenuItem() : null}
       <Menu.Menu position='right'>
-        <Menu.Item
-          name='logout'
-          onClick={(e, { name }) => null}
-        />
+        {token ? makeLogoutButton() : makeLoginButton()}
       </Menu.Menu>
     </Menu>
   )
