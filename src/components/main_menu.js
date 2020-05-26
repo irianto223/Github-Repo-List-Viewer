@@ -1,17 +1,28 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Menu } from 'semantic-ui-react'
-import { useHistory } from 'react-router-dom'
+import { useHistory, useLocation } from 'react-router-dom'
 
 export default (props) => {
   const history = useHistory()
+  const location = useLocation()
   const token = localStorage.getItem('token')
   
   const [activeItem, activeItemSetter] = useState('home')
-  const [isAuthenticated, isAuthenticatedSetter] = useState(token != null)
+  const [toggle, toggleSetter] = useState(false)
+
+  // console.log('Location:')
+  // console.log(location.pathname)
+  // console.log(location.state)
+
+  if (location?.state?.from === '/auth') {
+    location.state = {}
+    toggleSetter(!toggle)
+  }
 
   const handleClickMenu = (itemName, routeName) => {
     activeItemSetter(itemName)
-    history.push(routeName)
+    history.replace(routeName)
+    // history.push({ pathname: routeName, state: { from: location.pathname } })
   }
 
   const makePrivateMenuItem = () => {
@@ -30,7 +41,10 @@ export default (props) => {
     return (
       <Menu.Item
         name='login'
-        onClick={(_) => history.push('/auth')}
+        onClick={(_) => {
+          toggleSetter(!toggle)
+          history.push('/auth')
+        }}
       />
     )
   }
@@ -41,12 +55,16 @@ export default (props) => {
         name='logout'
         onClick={(_) => {
           localStorage.removeItem('token')
-          isAuthenticatedSetter(false)
+          toggleSetter(!toggle)
           history.replace('/')
         }}
       />
     )
   }
+
+  useEffect(() => {
+    // 
+  }, [])
 
   return (
     <Menu secondary>

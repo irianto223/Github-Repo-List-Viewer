@@ -9,7 +9,7 @@ import MainMenu from '../components/main_menu'
 
 export default (props) => {
   
-  const token = localStorage.getItem('token')
+  // const token = localStorage.getItem('token')
 
   const PrivateRoute = ({ children, ...rest }) => {
     return (
@@ -17,7 +17,7 @@ export default (props) => {
         {...rest}
         render={({ location }) => {
           // TRUE/FALSE akan diganti dengan kondisi hasil cek token di storage
-          return token ? children : <Redirect to={{ pathname: '/', state: { from: location } }} />
+          return localStorage.getItem('token') ? children : <Redirect to={{ pathname: '/', state: { from: location } }} />
         }}
       />
     )

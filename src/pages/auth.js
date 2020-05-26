@@ -5,7 +5,8 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { requestOauthToken } from '../services/API'
 
 export default () => {
-  const useQuery = () => new URLSearchParams(useLocation().search)
+  const location = useLocation()
+  const useQuery = () => new URLSearchParams(location.search)
   const { replace } = useHistory()
   const query = useQuery()
 
@@ -27,6 +28,8 @@ export default () => {
       .then((response) => {
         console.log(response)
         localStorage.setItem('token', response.data.access_token)
+        // replace('/')
+        replace({ pathname: '/', state: { from: location.pathname } })
       })
       .catch((error) => {
         console.log('Error request token -------->')

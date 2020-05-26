@@ -19,7 +19,7 @@ export const requestOauthToken = (code) => {
   return new Promise((resolve, reject) => {
     axios({
       method: 'POST',
-      url: `https://github.com/login/oauth/access_token`,
+      url: `/login/oauth/access_token`,
       headers: {
         'Accept': 'application/json',
         'Access-Control-Allow-Origin': '*'
@@ -46,7 +46,7 @@ export const fetchMyRepos = () => {
   return new Promise((resolve, reject) => {
     axios({
       method: 'GET',
-      url: `https://api.github.com/user/repos`,
+      url: `/user/repos`,
       headers: {
         'Authorization': `Bearer ${token}`,
         'Accept': 'application/json',
